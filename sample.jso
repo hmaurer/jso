@@ -1,0 +1,7 @@
+var answer = 1;
+def reveal(key) {
+  def foo(a) { answer = key * a; }
+  foo(6);
+}
+reveal(7);
+inspect;
