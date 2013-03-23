@@ -17,6 +17,10 @@ module.exports = {
     ["ExpressionStatement", "$$ = $1;"]
   ],
   FunctionDeclaration: [
+    [
+      "DEF Identifier ( Params ) = ExpressionStatement",
+      "$$ = yy.createFunctionDeclaration($2, $4, yy.createBlockStatement([$7]));"
+    ],
     ["DEF Identifier ( Params ) BlockStatement", "$$ = yy.createFunctionDeclaration($2, $4, $6);"],
     ["DEF Identifier ( Params ) T BlockStatement", "$$ = yy.createFunctionDeclaration($2, $4, $7);"]
   ],
