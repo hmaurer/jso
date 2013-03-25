@@ -1,0 +1,10 @@
+{
+   "name": "jso",
+   "author": "Henri Maurer",
+   "dependencies": {
+      "colors"     : "*",
+      "sugar"      : "*",
+      "mediator"   : "*",
+      "jison"      : "*"
+   }
+}

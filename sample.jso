@@ -1,2 +1,7 @@
-val answer = 42
-answr
+def answer(key) {
+   key * 7;
+}
+
+val result = answer(6)
+
+result
