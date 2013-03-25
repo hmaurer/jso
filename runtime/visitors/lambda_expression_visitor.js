@@ -4,6 +4,5 @@ var JSOFunction = require('./../objects/jso_function');
 
 module.exports = function(node, scope) {
    var block = context.visit(node.body, scope);
-   var fn = new JSOFunction(node.params, block);
-   scope.declare('val', node.id, fn);
+   return new JSOFunction(node.params, block);
 }

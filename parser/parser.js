@@ -4,9 +4,10 @@ lexical_rules = [
   ["def", "return 'DEF';"],
   ["var", "return 'VAR';"],
   ["val", "return 'VAL';"],
+  ["return", "return 'RETURN';"],
   ["inspect", "return 'INSPECT';"],
-  ["[a-z]+", "return 'ID';"],
-  ["[0-9]+", "return 'NUM';"],
+  ["[a-zA-Z]{1}[a-zA-Z0-9_]*", "return 'ID';"],
+  ["[\\-|\\+]?[0-9]*\\.?[0-9]+(e[\\-|\\+]?[0-9]*\\.?[0-9]+)?", "return 'NUM';"],
   ["=>", "return '=>';"],
   ["=", "return '=';"],
   ["\\(", "return '(';"],
@@ -14,17 +15,16 @@ lexical_rules = [
   ["\\{", "return '{';"],
   ["\\}", "return '}';"],
   ["\\,", "return ',';"],
-  ["\\*", "return '*';"],
-  ["\\+", "return '+';"],
-  ["\\-", "return '-';"],
+  ["\\*|\\/", "return 'MULTIPLICATIVE';"],
+  ["\\+|\\-", "return 'ADDITIVE';"],
   ["[\\n;]+", "return 'T';"],
   ["[\\s]+", '']
 ]
 
 operators = [
   ["right", "="],
-  ["left", "+"],
-  ["left", "*"],
+  ["left", "ADDITIVE"],
+  ["left", "MULTIPLICATIVE"],
   ["right", "UNARY"]
 ]
 

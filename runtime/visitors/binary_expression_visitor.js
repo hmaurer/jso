@@ -6,11 +6,20 @@ module.exports = function(node, scope) {
       case '*':
          return visitMultiplicative(node, left, right, scope);
          break;
+      case '+':
+         return visitAdditive(node, left, right, scope);
+         break;
    }
 }
 
 function visitMultiplicative(node, left, right, scope) {
    if(Object.isNumber(left) && Object.isNumber(right)) {
       return left * right;
+   }
+}
+
+function visitAdditive(node, left, right, scope) {
+   if(Object.isNumber(left) && Object.isNumber(right)) {
+      return left + right;
    }
 }

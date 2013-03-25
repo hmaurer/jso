@@ -6,19 +6,20 @@ function JSOBlock(parent_scope, body) {
 }
 
 /**
-* Spawn child scope
-*/
+ * Spawn child scope
+ */
 JSOBlock.prototype.getScope = function() {
    return context.spawnScope(this.parent_scope);
 }
 
 /**
-* Call the block using the given scope
-*/
+ * Call the block using the given scope
+ */
 JSOBlock.prototype.call = function(scope) {
    var result;
    this.body.each(function(e) {
       result = context.visit(e, scope);
+      return e.type != 'ReturnStatement';
    });
    return result;
 }

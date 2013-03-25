@@ -1,15 +1,17 @@
-function o(pattern, action) {
+function o(pattern, action, options) {
   action = action || "$1";
+  options = options || {};
   if(action.indexOf('create') != -1) {
-     action = addTrackingData(action);
+     action = addTrackingData(action, options);
   }
   action = "$$ = " + action;
   return [pattern, action];
 }
 
-function addTrackingData(action) {
+function addTrackingData(action, options) {
+   var i = options.track || 1;
   var action = 'function() { var node = ' + action + ";";
-  return action + "node['track'] = @1; return node; }();"
+  return action + "node['track'] = @"+i+"; return node; }();"
 }
 
 module.exports = {
@@ -18,6 +20,7 @@ module.exports = {
     ["SourceElements T", "return yy.createProgram($1);"]
   ],
   SourceElements: [
+    o('', '[]'),
     o('SourceElement', '[$1]'),
     ['SourceElements T SourceElement', '$1.push($3)']
   ],
@@ -28,6 +31,7 @@ module.exports = {
     o('VariableDeclaration'),
     o('FunctionDeclaration'),
     o('InspectStatement'),
+    o('ReturnStatement'),
     o('ExpressionStatement')
   ],
   FunctionDeclaration: [
@@ -35,8 +39,7 @@ module.exports = {
       "DEF Identifier ( Params ) = ExpressionStatement",
       "yy.createFunctionDeclaration($2, $4, yy.createBlockStatement([$7]))"
     ),
-    o('DEF Identifier ( Params ) BlockStatement', 'yy.createFunctionDeclaration($2, $4, $6)'),
-    o('DEF Identifier ( Params ) T BlockStatement', 'yy.createFunctionDeclaration($2, $4, $7)')
+    o('DEF Identifier ( Params ) = BlockStatement', 'yy.createFunctionDeclaration($2, $4, $7)')
   ],
   Params: [
     o('', '[]'),
@@ -45,6 +48,9 @@ module.exports = {
   ],
   InspectStatement: [
     o("INSPECT", "yy.createInspectStatement()")
+  ],
+  ReturnStatement: [
+    o("RETURN Expression", "yy.createReturnStatement($2)")
   ],
   VariableDeclaration: [
     o("VAL VariableDeclarators", "yy.createVariableDeclaration('val', $2)"),
@@ -70,6 +76,7 @@ module.exports = {
   Expression: [
     o("AssignmentExpression"),
     o("BinaryExpression"),
+    o("LambdaExpression"),
     o("GroupExpression"),
     o("CallExpression"),
     o("Identifier"),
@@ -78,8 +85,12 @@ module.exports = {
   AssignmentExpression: [
    o("Identifier = Expression", "yy.createAssignmentExpression('=', $1, $3)")
   ],
+  LambdaExpression: [
+    o("( Params ) => ExpressionStatement", "yy.createLambdaExpression($2, yy.createBlockStatement([$5]))"),
+    o("( Params ) => BlockStatement", "yy.createLambdaExpression($2, $5)")
+  ],
   CallExpression: [
-    o("Identifier ( Args )", "yy.createCallExpression($1, $3)")
+    o("Expression ( Args )", "yy.createCallExpression($1, $3)", { track: 2 })
   ],
   Args: [
     o("", "[]"),
@@ -87,8 +98,8 @@ module.exports = {
     ["Args , Expression", "$1.push($3)"]
   ],
   BinaryExpression: [
-    o("Expression + Expression", "yy.createBinaryExpression('+', $1, $3)"),
-    o("Expression * Expression", "yy.createBinaryExpression('*', $1, $3)")
+    o("Expression ADDITIVE Expression", "yy.createBinaryExpression($2, $1, $3)"),
+    o("Expression MULTIPLICATIVE Expression", "yy.createBinaryExpression($2, $1, $3)")
   ],
   GroupExpression: [
     o("( Expression )", "$2")

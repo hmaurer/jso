@@ -15,11 +15,28 @@ ast.createInspectStatement = function() {
   }
 }
 
+/* Return Statement */
+ast.createReturnStatement = function(argument) {
+  return {
+    type: 'ReturnStatement',
+    argument: argument
+  }
+}
+
 /* Function Declaration */
 ast.createFunctionDeclaration = function(id, params, body) {
   return {
     type: 'FunctionDeclaration',
     id: id,
+    params: params,
+    body: body
+  }
+}
+
+/* Lambda Expression */
+ast.createLambdaExpression = function(params, body) {
+  return {
+    type: 'LambdaExpression',
     params: params,
     body: body
   }
