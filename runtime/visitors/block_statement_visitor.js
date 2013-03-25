@@ -1,7 +1,7 @@
 var context = require('mediator').context;
 
-var Block = require('./../objects/block');
+var JSOBlock = require('./../objects/jso_block');
 
 module.exports = function(node, scope) {
-   return new Block(scope, node.body);
+   return new JSOBlock(scope, node.body);
 }
