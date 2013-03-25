@@ -1,6 +1,8 @@
-module.exports = function(node, context) {
-  node['declarations'].each(function(e) {
-    var init = e['init'] && context.visit(e['init']) || null;
-    context.scope.declare(node['kind'], e['id']['name'], init);
+var context = require('mediator').context;
+
+module.exports = function(node, scope) {
+  node.declarations.each(function(declarator) {
+    var init = declarator.init && context.visit(declarator.init, scope) || null;
+    scope.declare(node.kind, declarator.id, init);
   });
 }

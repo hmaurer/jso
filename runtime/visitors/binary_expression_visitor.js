@@ -1,29 +1,16 @@
-module.exports = function(node, context) {
-  var left = context.visit(node['left']);
-  var right = context.visit(node['right']);
+var context = require('mediator').context;
 
-  switch(node['operator']) {
-  case '*':
-    return visitMultiplicative(left, right);
-    break;
-  case '+':
-    return visitAdditive(left, right);
-    break;
-  }
+module.exports = function(node, scope) {
+   var left = context.visit(node.left, scope), right = context.visit(node.right, scope);
+   switch(node.operator) {
+      case '*':
+         return visitMultiplicative(node, left, right, scope);
+         break;
+   }
 }
 
-function visitMultiplicative(left, right) {
-  if(Object.isNumber(left) && Object.isNumber(right)) {
-    return left * right;
-  } else {
-    throw Error('Supported operations: num * num');
-  }
-}
-
-function visitAdditive(left, right) {
-  if(Object.isNumber(left) && Object.isNumber(right)) {
-    return left + right;
-  } else {
-    throw Error('Supported operations: num + num');
-  }
+function visitMultiplicative(node, left, right, scope) {
+   if(Object.isNumber(left) && Object.isNumber(right)) {
+      return left * right;
+   }
 }

@@ -1,3 +1,5 @@
-module.exports = function(node, context) {
-  return context.visit(node['expression']);
+var context = require('mediator').context;
+
+module.exports = function(node, scope) {
+  return context.visit(node.expression, scope);
 }

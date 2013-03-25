@@ -1,11 +1,9 @@
-var Scope = require('./../scope');
+var context = require('mediator').context;
 
-module.exports = function(node, context) {
-  context.scope = new Scope();
-
+module.exports = function(node, scope) {
   var result;
-  node['body'].each(function(child) {
-    result = context.visit(child);
+  node.body.each(function(child) {
+    result = context.visit(child, scope);
   });
-  console.log(result);
+  return result;
 }

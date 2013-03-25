@@ -1,7 +1,6 @@
-var Scope = require('./../scope');
-var Context = require('./../context');
+var context = require('mediator').context;
 
-module.exports = function(node, context) {
-  var fn = context.scope.get(node['callee']['name']);
-  fn.call(node['arguments']);
+module.exports = function(node, scope) {
+  var fn = scope.get(node.callee);
+  fn.call(node.arguments);
 }
